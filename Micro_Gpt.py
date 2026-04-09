@@ -110,7 +110,7 @@ class multihead_attention(nn.Module):
                 self_attention(embadded_dim, self.head_size, block_size, musking)
             )
 
-        self.projection = nn.Linear(embadded_dim, embadded_dim) #You need projection to combine outputs of all heads into one meaningful representation
+        # self.projection = nn.Linear(embadded_dim, embadded_dim) Baically thi is w0 Which is multiplied with concat of all head
         # projection create a matriz fo wts containing emb,emb dim where  out put is multiplied to combine outputs togetehr
     def forward(self, x):
 
@@ -128,4 +128,37 @@ class multihead_attention(nn.Module):
 
         return out         
         
-        
+
+# Feed Forward Neural Network
+
+class feedForwardNN(nn.Module):
+    def __init__(self):
+        super().__init__
+
+        self.ann = nn.Sequential(nn.Linear(embadding_dim, embadding_dim*5),
+                                nn.GELU(),
+                                nn.Linear(embadding_dim*5,embadding_dim),
+                                )
+
+
+    def forward(self,x):
+        return self.ann(x)
+    
+
+# Transformer Decoder Block
+
+
+class decoder_block(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+        self.multi_head_attention = multihead_attention
+        self.feedForwardNN = feedForwardNN
+        # Now telling the size of matrix before placing a value for normalization
+        self.layer_norm_1 =nn.LayerNorm(embadding_dim)  #LayerNorm → multihead_Attention → Add (residual)
+        self.layer_norm_2 = nn.LayerNorm(embadding_dim) #LayerNorm →Fnn → Add (residual)
+
+    def forward(self,x):
+        x = x+self.multi_head_attention(self.layer_norm_1(x))
+        x = x.feedForwardNN(self.layer_norm_2(x))
+        return x
