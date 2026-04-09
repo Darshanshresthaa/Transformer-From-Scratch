@@ -5,6 +5,8 @@
 This project is a **character-level GPT (Generative Pretrained Transformer)** built from scratch using PyTorch.
 It learns patterns from raw text data and generates new text one character at a time.
 
+This scratch code is just to learn Transformer So the Architecture is not 100% correct 
+
 The model implements core Transformer concepts including:
 
 * Self-Attention
@@ -280,7 +282,6 @@ It serves as a strong foundation for:
 
 Darshan Shrestha
 
----
 
-##  If you found this useful
+
 
